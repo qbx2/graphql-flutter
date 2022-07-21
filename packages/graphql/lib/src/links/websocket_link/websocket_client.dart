@@ -495,7 +495,11 @@ class SocketClient {
                 .where((message) => message is SubscriptionComplete)
                 .take(1);
 
-        subscriptionComplete.listen((_) => response.close());
+        subscriptionComplete.listen(
+          (_) => response.close(),
+          onDone: (_) => response.close(),
+          onError: (_) => response.close(),
+        );
 
         dataErrorComplete
             .where((message) => message is SubscriptionData)
