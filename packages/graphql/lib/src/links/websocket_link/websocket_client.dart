@@ -497,8 +497,16 @@ class SocketClient {
 
         subscriptionComplete.listen(
           (_) => response.close(),
-          onDone: (_) => response.close(),
-          onError: (_) => response.close(),
+          onDone: () {
+            if (!config.autoReconnect) {
+              response.close();
+            }
+          },
+          onError: (_) {
+            if (!config.autoReconnect) {
+              response.close();
+            }
+          },
         );
 
         dataErrorComplete
